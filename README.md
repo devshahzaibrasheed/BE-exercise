@@ -52,6 +52,7 @@ Here you can see an example on how this information could be displayed:
 
 ### Notes
 
+* Folk the repo to your git and commit your changes to your repo. 
 * The client code should be implemented in a BE programming language
 * You should not use a FrontEnd library such as Angular/Vue/React or even pure JS for the client part (node.js is allowed). You may use FrontEnd libraries if you decided to add UI in addition to the BE part, but this is not mandatory.
 * We don't expect changes to be made on the server application. It should be treated as an external application owned by someone else.
