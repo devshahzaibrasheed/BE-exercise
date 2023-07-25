@@ -8,11 +8,16 @@ Bundler.require(:default, ENV.fetch('RACK_ENV', 'development'))
 
 class App < Sinatra::Base
   get '/bookings_with_quality_check' do
-  	response = Faraday.get("#{ENV['SERVER_URL']}/api/bookings")
-  	bookings = JSON.parse(response.body)['bookings']
-  	bookings = bookings_with_quality_check(bookings)
+    begin 
+    	response = Faraday.get("#{ENV['SERVER_URL']}/api/bookings")
+    	bookings = JSON.parse(response.body)['bookings']
+    	bookings = bookings_with_quality_check(bookings)
 
-    JSON.dump('bookings_with_quality_check' => bookings)
+      JSON.dump('bookings_with_quality_check' => bookings)
+    rescue Faraday::ConnectionFailed => e
+      status 503 # Service Unavailable
+      JSON.dump('error' => 'Something went wrong with booking portal API.')
+    end
   end
 
   private
@@ -23,7 +28,7 @@ class App < Sinatra::Base
       record = build_record(booking, result)
       result << record
     end
-    
+
     result.map {|a| a.delete('student_id')}
     result
   end
